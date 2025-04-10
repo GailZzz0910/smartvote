@@ -25,6 +25,7 @@ function Sidebar(props) {
 
   const handleLogout = () => {
     setIsLoggedIn(false); // ✅ Log out the user
+    localStorage.removeItem("authToken"); // delete stored token for security reasons
     navigate("/"); // ✅ Redirect to login page
   };
 
