@@ -199,7 +199,7 @@ function AddCandidate({ setIsLoggedIn }) {
         placeholder="Enter election description"
         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 p-3 resize-none"
       />
-      <h1 className="font-black text-yellow-500 text-2xl">Election Period</h1>
+      <h1 className="font-black text-[#EA580C] text-base">Election Period</h1>
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
           <p>Start Date</p>
@@ -227,7 +227,7 @@ function AddCandidate({ setIsLoggedIn }) {
       <button
         type="button"
         disabled={loading}
-        className="p-4 bg-green-400 rounded-xl text-white cursor-pointer"
+        className="p-4 bg-[#111B56] rounded-xl text-white cursor-pointer"
         onClick={() => setIndex(1)}
       >
         Next
@@ -238,11 +238,12 @@ function AddCandidate({ setIsLoggedIn }) {
         <button
           type="button"
           onClick={addCandidate}
-          className="px-8 py-4 flex flex-row gap-4 w-fit rounded-3xl bg-green-400 text-white cursor-pointer"
+          className="px-4 py-2 flex flex-row gap-4 w-fit rounded-[10px] bg-[#21C179] text-white cursor-pointer"
         >
           <UserPlus />
           <p>Add candidate</p>
         </button>
+
         {formData.candidates.map((candidate, index) => (
           <div key={index} className="flex flex-row gap-4 items-center">
             <input
@@ -259,7 +260,7 @@ function AddCandidate({ setIsLoggedIn }) {
               name="party"
               value={candidate.party}
               onChange={(e) => handleCandidateChange(index, e)}
-              placeholder="Party affiliation"
+              placeholder="Partylist"
               required
               class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 p-3"
             />
@@ -274,13 +275,21 @@ function AddCandidate({ setIsLoggedIn }) {
           </div>
         ))}
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="p-4 bg-green-400 rounded-xl text-white cursor-pointer"
-        >
-          {loading ? "Creating..." : "Create Election"}
-        </button>
+        <div className="relative h-80 w-full">
+          <button
+            type="submit"
+            disabled={loading}
+            className={`p-4 px-16 rounded-xl text-white absolute bottom-4 right-4 transition-all duration-300 
+      ${
+        loading
+          ? "bg-[#111B56a0] cursor-not-allowed"
+          : "bg-[#111B56d4] hover:bg-[#111B56]"
+      }
+    `}
+          >
+            {loading ? "Creating..." : "Submit Entry"}
+          </button>
+        </div>
       </div>
     </>,
   ];
@@ -294,7 +303,7 @@ function AddCandidate({ setIsLoggedIn }) {
           className="w-full flex flex-col gap-4 p-8 rounded-xl border border-gray-300 shadow-lg bg-white"
         >
           <div className="flex flex-col gap-4 border-b border-gray-300">
-            <h1 className="text-3xl font-black text-blue-900">Create entry</h1>
+            <h1 className="text-3xl font-black text-blue-900">Create Entry</h1>
             <div className="flex flex-row gap-4 p-4">
               <button
                 type="button"
@@ -307,6 +316,7 @@ function AddCandidate({ setIsLoggedIn }) {
               >
                 Election
               </button>
+
               <button
                 type="button"
                 className={

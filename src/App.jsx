@@ -5,6 +5,7 @@ import Login from "./Auth/Login";
 import Home from "./Home";
 import AddCandidate from "./screen/AddCandidate";
 import GetBarangay from "./screen/GetBarangay";
+import Result from "./screen/Result"; // Adjust path if necessary
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -35,6 +36,11 @@ function App() {
           path="/get-barangay"
           element={<GetBarangay setIsLoggedIn={setIsLoggedIn} />}
         />
+        <Route 
+          path="/result" 
+          element={<Result />} 
+        />
+
       </Routes>
     </Router>
   );

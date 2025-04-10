@@ -35,6 +35,15 @@ function Home({ isLoggedIn, setIsLoggedIn }) {
     ],
   };
 
+  const currentHour = new Date().getHours();
+  let greeting = "Good evening";
+
+  if (currentHour >= 5 && currentHour < 12) {
+    greeting = "Good morning";
+  } else if (currentHour >= 12 && currentHour < 17) {
+    greeting = "Good afternoon";
+  }
+
   useEffect(() => {
     setIsLoggedIn(true);
   }, []);
@@ -50,12 +59,13 @@ function Home({ isLoggedIn, setIsLoggedIn }) {
   return (
     <main className="flex flex-row min-h-screen bg-gray-100">
       <Sidebar page={"dashboard"} setIsLoggedIn={setIsLoggedIn} />
+      
       <div className="flex flex-col p-12 2xl:basis-[80%] basis-[70%] bg-gray-100 gap-4">
-        <div className="flex flex-col w-full bg-white basis-[20%] rounded-3xl py-4 px-8 justify-center gap-2">
+        <div className="flex flex-col w-full bg-white basis-[12%] rounded-3xl py-4 px-8 justify-center gap-2">
           <p className="text-gray-400">
             {dayjs(new Date()).format("dddd | MMMM DD, YYYY").toString()}
           </p>
-          <h1 className="text-4xl font-bold">Good morning, ADMIN TEXT HERE</h1>
+          <h1 className="text-4xl font-bold">{greeting}, Admin!</h1>
         </div>
         <h1 className="font-black text-2xl text-blue-600">Overview</h1>
         <div className="flex flex-row basis-[80%] gap-4">

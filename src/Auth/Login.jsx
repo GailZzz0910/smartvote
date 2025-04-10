@@ -14,7 +14,7 @@ function Login({ setIsLoggedIn, setAuthToken }) {
     e.preventDefault();
     setIsLoading(true);
     setError("");
-
+  
     try {
       const response = await fetch(
         "https://smart-vote-backend.vercel.app/auth/login",
@@ -29,26 +29,30 @@ function Login({ setIsLoggedIn, setAuthToken }) {
           }),
         }
       );
-
+  
       const data = await response.json();
-
+  
       if (!response.ok) {
         throw new Error(data.message || "Login failed");
       }
-
-      // Store token in state and localStorage
+  
       const token = data.token;
       setAuthToken(token);
       localStorage.setItem("authToken", token);
-
+  
       setIsLoggedIn(true);
       navigate("/home");
     } catch (err) {
-      setError(err.message || "Login failed. Please try again.");
+      const customError =
+        err.message === "Login failed"
+          ? "Only authorized admin can login"
+          : err.message;
+      setError(customError);
     } finally {
       setIsLoading(false);
     }
   };
+  
 
   return (
     <div className="flex min-h-screen flex-row justify-center items-center">
