@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/sidebar";
-import { InfoIcon, LoaderIcon, SearchIcon } from "lucide-react";
+import { InfoIcon, LoaderIcon, Search, ShieldAlert } from "lucide-react";
 
 export default function GetBarangay({ setIsLoggedIn }) {
   const [cities, setCities] = useState([]);
@@ -139,13 +139,13 @@ export default function GetBarangay({ setIsLoggedIn }) {
       <Sidebar page={"get-barangay"} setIsLoggedIn={setIsLoggedIn} />
       <div className="flex flex-col p-12 2xl:basis-[80%] basis-[70%] bg-gray-100 gap-12">
         <div className="flex flex-col gap-4 w-full">
-          <h2 className="text-4xl font-black text-blue-500">
+          <h2 className="text-4xl font-extrabold text-blue-500">
             Election Monitoring
           </h2>
           {loading && !selectedCity && <p>Loading cities...</p>}
           <div className="flex flex-col gap-6 p-6 bg-white rounded-xl w-full border border-gray-300 shadow">
-            <h1 className="font-bold text-blue-400">
-              Search elections by monitoring
+            <h1 className="font-bold text-[#111B56]">
+              Search Elections by Location
             </h1>
             <div className="grid grid-cols-3 gap-4">
               <div className="flex flex-col gap-2">
@@ -187,17 +187,22 @@ export default function GetBarangay({ setIsLoggedIn }) {
               <button
                 onClick={fetchElections}
                 disabled={!selectedCity || !selectedBarangay || loading}
-                className="bg-green-400 text-white rounded-3xl p-4 cursor-pointer"
+                className="bg-[#111B56]/[0.83] text-white rounded-full p-4 cursor-pointer flex items-center justify-center w-12 h-12"
               >
-                {loading ? "Searching..." : "Search Elections"}
+                {loading ? (
+                  <div className="animate-spin">
+                    <Search size={20} />
+                  </div>
+                ) : (
+                  <Search size={20} />
+                )}
               </button>
             </div>
           </div>
         </div>
-
         {elections.length > 0 && (
           <div className="flex flex-col gap-4">
-            <h1 className="text-xl font-bold text-green-500">Result</h1>
+            <h1 className="text-xl font-bold text-[#059669]">Result</h1>
             <div className="overflow-x-auto bg-white rounded-2xl p-4 shadow border border-gray-200">
               <table className="min-w-full table-auto">
                 <thead>
@@ -211,31 +216,41 @@ export default function GetBarangay({ setIsLoggedIn }) {
                 <tbody className="">
                   {elections.map((election) =>
                     election.candidates?.length > 0 ? (
-                      election.candidates.map((candidate, index) => (
-                        <tr key={candidate._id} className="">
-                          {index === 0 && (
-                            <>
-                              <td
-                                className="px-6 py-4"
-                                rowSpan={election.candidates.length}
-                              >
-                                {election.name}
-                              </td>
-                              <td
-                                className="px-6 py-4"
-                                rowSpan={election.candidates.length}
-                              >
-                                {election.description}
-                              </td>
-                            </>
-                          )}
-                          {index !== 0 && null}
-                          <td className="px-6 py-4">{candidate.name}</td>
-                          <td className="px-6 py-4">{candidate.party}</td>
-                        </tr>
-                      ))
+                      election.candidates.map((candidate, index) => {
+                        const isLast = index === election.candidates.length - 1;
+
+                        return (
+                          <tr
+                            key={candidate._id}
+                            className={isLast ? "border-b border-gray-300" : ""}
+                          >
+                            {index === 0 && (
+                              <>
+                                <td
+                                  className="px-6 py-4"
+                                  rowSpan={election.candidates.length}
+                                >
+                                  {election.name}
+                                </td>
+                                <td
+                                  className="px-6 py-4"
+                                  rowSpan={election.candidates.length}
+                                >
+                                  {election.description}
+                                </td>
+                              </>
+                            )}
+                            {index !== 0 && null}
+                            <td className="px-6 py-4">{candidate.name}</td>
+                            <td className="px-6 py-4">{candidate.party}</td>
+                          </tr>
+                        );
+                      })
                     ) : (
-                      <tr key={election._id} className="">
+                      <tr
+                        key={election._id}
+                        className="border-b-2 border-gray-300"
+                      >
                         <td className="px-6 py-2">{election.name}</td>
                         <td className="px-6 py-2">{election.description}</td>
                         <td
@@ -252,8 +267,12 @@ export default function GetBarangay({ setIsLoggedIn }) {
             </div>
           </div>
         )}
-
-        {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
+        {error && (
+          <div className="flex flex-row gap-2 items-center p-4 bg-red-500 w-fit rounded-3xl">
+            <ShieldAlert size={24} className="text-white" />
+            <p className="text-white font-black">{error}</p>
+          </div>
+        )}
       </div>
     </main>
   );

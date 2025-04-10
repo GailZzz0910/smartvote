@@ -35,11 +35,11 @@ function Sidebar(props) {
         <h1 className="text-center text-3xl font-bold my-8">LOGO</h1>
 
         <button
-          className="flex flex-row items-center py-6  px-8 bg-white shadow-md rounded-[50px]   text-[#111B56] hover:bg-[#111B56] hover:text-white cursor-pointer transition-all delay-0 duration-300 gap-4"
+          className="flex items-center p-6 bg-white shadow-md rounded-[50px] text-[#111B56] hover:bg-[#111B56] hover:text-white cursor-pointer transition-all duration-300 gap-4 w-fit"
           onClick={() => navigate("/add-candidate")}
         >
           <UserPlus />
-          <h1>Create Election</h1>
+          <h1 className="text-base font-semibold">Create Election</h1>
         </button>
 
         <div className="flex flex-col gap-2">

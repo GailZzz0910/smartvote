@@ -273,7 +273,7 @@ function AddCandidate({ setIsLoggedIn }) {
           <button
             type="submit"
             disabled={loading}
-            className={`p-4 px-16 rounded-xl text-white absolute bottom-4 right-4 transition-all duration-300 
+            className={`p-4 px-6 rounded-xl text-white absolute bottom-4 right-4 transition-all duration-300 
       ${
         loading
           ? "bg-[#111B56a0] cursor-not-allowed"
