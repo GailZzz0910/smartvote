@@ -39,6 +39,7 @@ function Login({ setIsLoggedIn, setAuthToken }) {
       const token = data.token;
       setAuthToken(token);
       localStorage.setItem("authToken", token);
+      console.log("Token:", token);
   
       setIsLoggedIn(true);
       navigate("/home");

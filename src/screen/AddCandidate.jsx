@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { UserPlus, X } from "lucide-react";
 
 import Sidebar from "../components/sidebar";
+import axios from "axios";
 
 function AddCandidate({ setIsLoggedIn }) {
   const [formData, setFormData] = useState({
@@ -30,31 +31,28 @@ function AddCandidate({ setIsLoggedIn }) {
 
       try {
         setLoading(true);
-        const response = await fetch(
-          `https://smart-vote-backend.vercel.app/locations/fetchCitiesAll`,
+        const response = await axios.get(
+          "https://smart-vote-backend.vercel.app/locations/fetchCitiesAll",
           {
-            headers: { Authorization: token },
+            headers: {
+              Authorization: token,
+            },
           }
         );
 
-        if (!response.ok) {
-          if (response.status === 401) {
-            localStorage.removeItem("authToken");
-            return;
-          }
-          throw new Error("Failed to fetch cities");
-        }
-
-        const data = await response.json();
-        setCities(data);
+        setCities(response.data);
       } catch (err) {
-        setError(err.message);
+        if (err.response?.status === 401) {
+          localStorage.removeItem("authToken");
+          return;
+        }
+        setError(err.response?.data?.message || "Failed to fetch cities");
       } finally {
         setLoading(false);
       }
     };
     fetchCities();
-  }, [apiUrl, navigate]);
+  }, [navigate]);
 
   // Update barangays when city changes
   useEffect(() => {
@@ -113,26 +111,22 @@ function AddCandidate({ setIsLoggedIn }) {
 
     try {
       setLoading(true);
-      const response = await fetch(`${apiUrl}/elections`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-        body: JSON.stringify({
+      const response = await axios.post(
+        "https://smart-vote-backend.vercel.app/elections",
+        {
           ...formData,
           candidates: filledCandidates,
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to create election");
-      }
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
 
       alert("Election created successfully!");
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || "Failed to create election");
     } finally {
       setLoading(false);
     }
