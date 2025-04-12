@@ -203,67 +203,73 @@ export default function GetBarangay({ setIsLoggedIn }) {
         {elections.length > 0 && (
           <div className="flex flex-col gap-4">
             <h1 className="text-xl font-bold text-[#059669]">Result</h1>
-            <div className="overflow-x-auto bg-white rounded-2xl p-4 shadow border border-gray-200">
-              <table className="min-w-full table-auto">
-                <thead>
-                  <tr className="border-b border-gray-300 ">
-                    <th className="px-6 py-4 text-left">Election Name</th>
-                    <th className="px-6 py-4 text-left">Description</th>
-                    <th className="px-6 py-4 text-left">Candidate Name</th>
-                    <th className="px-6 py-4 text-left">Partylist</th>
-                  </tr>
-                </thead>
-                <tbody className="">
-                  {elections.map((election) =>
-                    election.candidates?.length > 0 ? (
-                      election.candidates.map((candidate, index) => {
-                        const isLast = index === election.candidates.length - 1;
 
-                        return (
-                          <tr
-                            key={candidate._id}
-                            className={isLast ? "border-b border-gray-300" : ""}
-                          >
-                            {index === 0 && (
-                              <>
-                                <td
-                                  className="px-6 py-4"
-                                  rowSpan={election.candidates.length}
-                                >
-                                  {election.name}
-                                </td>
-                                <td
-                                  className="px-6 py-4"
-                                  rowSpan={election.candidates.length}
-                                >
-                                  {election.description}
-                                </td>
-                              </>
-                            )}
-                            {index !== 0 && null}
-                            <td className="px-6 py-4">{candidate.name}</td>
-                            <td className="px-6 py-4">{candidate.party}</td>
-                          </tr>
-                        );
-                      })
-                    ) : (
-                      <tr
-                        key={election._id}
-                        className="border-b-2 border-gray-300"
-                      >
-                        <td className="px-6 py-2">{election.name}</td>
-                        <td className="px-6 py-2">{election.description}</td>
-                        <td
-                          className="px-6 py-2 italic text-gray-400"
-                          colSpan={2}
+            
+            <div className="overflow-x-auto bg-white rounded-2xl p-4 shadow border border-gray-200 h-[520px]">
+              <div className="overflow-y-auto rounded-md shadow-sm">
+                <table className="min-w-full table-auto">
+                  <thead className="bg-gray-100 sticky top-0 z-10">
+                    <tr className="border-b border-gray-300">
+                      <th className="px-6 py-4 text-left">Election Name</th>
+                      <th className="px-6 py-4 text-left">Description</th>
+                      <th className="px-6 py-4 text-left">Candidate Name</th>
+                      <th className="px-6 py-4 text-left">Partylist</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {elections.map((election) =>
+                      election.candidates?.length > 0 ? (
+                        election.candidates.map((candidate, index) => {
+                          const isLast =
+                            index === election.candidates.length - 1;
+
+                          return (
+                            <tr
+                              key={candidate._id}
+                              className={
+                                isLast ? "border-b border-gray-300" : ""
+                              }
+                            >
+                              {index === 0 && (
+                                <>
+                                  <td
+                                    className="px-6 py-4"
+                                    rowSpan={election.candidates.length}
+                                  >
+                                    {election.name}
+                                  </td>
+                                  <td
+                                    className="px-6 py-4"
+                                    rowSpan={election.candidates.length}
+                                  >
+                                    {election.description}
+                                  </td>
+                                </>
+                              )}
+                              <td className="px-6 py-4">{candidate.name}</td>
+                              <td className="px-6 py-4">{candidate.party}</td>
+                            </tr>
+                          );
+                        })
+                      ) : (
+                        <tr
+                          key={election._id}
+                          className="border-b-2 border-gray-300"
                         >
-                          No candidates found
-                        </td>
-                      </tr>
-                    )
-                  )}
-                </tbody>
-              </table>
+                          <td className="px-6 py-2">{election.name}</td>
+                          <td className="px-6 py-2">{election.description}</td>
+                          <td
+                            className="px-6 py-2 italic text-gray-400"
+                            colSpan={2}
+                          >
+                            No candidates found
+                          </td>
+                        </tr>
+                      )
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         )}

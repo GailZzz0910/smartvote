@@ -8,7 +8,7 @@ function Login({ setIsLoggedIn, setAuthToken }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(undefined);
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate(); // Used for navigation
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -92,7 +92,7 @@ function Login({ setIsLoggedIn, setAuthToken }) {
           </div>
           <button
             type="submit"
-            className="bg-[#111B56D4] text-white p-4 rounded-3xl"
+            className="bg-[#111B56D4] text-white p-4 rounded-3xl cursor-pointer"
             disabled={isLoading}
           >
             {isLoading ? "Logging in..." : "Login"}
