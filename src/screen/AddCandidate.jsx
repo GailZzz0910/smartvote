@@ -136,17 +136,23 @@ function AddCandidate({ setIsLoggedIn }) {
   const pages = [
     <>
       <div className="flex flex-1 flex-col gap-2">
-        <p>Election name</p>
-        <input
-          type="text"
+        <p>Election Name</p>
+        <select
           name="name"
           value={formData.name}
           onChange={handleChange}
           required
-          placeholder="Enter election name"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 p-3"
-        />
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 p-3"
+        >
+          <option value="">Select an election</option>
+          <option value="SK Chairman">SK Chairman</option>
+          <option value="SK Kagawad">SK Kagawad</option>
+          <option value="Barangay Chairman">Barangay Chairman</option>
+          <option value="Barangay Kagawad">Barangay Kagawad</option>
+          {/*Dugang Candidates Here*/}
+        </select>
       </div>
+
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-1 flex-col gap-2">
           <p>City</p>
@@ -193,7 +199,7 @@ function AddCandidate({ setIsLoggedIn }) {
         placeholder="Enter election description"
         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 p-3 resize-none"
       />
-      <h1 className="font-black text-[#EA580C] text-base">Election Period</h1>
+      <h1 className="font-extrabold text-[#EA580C] text-base">Election Period</h1>
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
           <p>Start Date</p>

@@ -11,22 +11,27 @@ import {
   User,
   Building,
   UserPlus,
+  TrendingUp,
+  MonitorCog,
+  UserCog,
+  VoteIcon,
 } from "lucide-react";
 import { useState } from "react";
 
 import "../globals.css";
 
 function Sidebar(props) {
-  const { page, setIsLoggedIn } = props;
+  const { setIsLoggedIn } = props;
   const navigate = useNavigate();
 
-  const [isSettingsDropdownOpen, setSettingsDropdownVisibility] =
-    useState(false);
+  const [isMonitorDropdownOpen, setMonitorDropdownVisibility] = useState(false);
+  const [isSettingsDropdownOpen, setSettingsDropdownVisibility] = useState(false);
+  const [activeButton, setActiveButton] = useState(""); // Track active button globally
 
   const handleLogout = () => {
-    setIsLoggedIn(false); // ✅ Log out the user
-    localStorage.removeItem("authToken"); // delete stored token for security reasons
-    navigate("/"); // ✅ Redirect to login page
+    setIsLoggedIn(false);
+    localStorage.removeItem("authToken");
+    navigate("/");
   };
 
   return (
@@ -36,17 +41,25 @@ function Sidebar(props) {
 
         <button
           className="flex items-center p-6 bg-white shadow-md rounded-[50px] text-[#111B56] hover:bg-[#111B56] hover:text-white cursor-pointer transition-all duration-300 gap-4 w-fit"
-          onClick={() => navigate("/add-candidate")}
+          onClick={() => {
+            navigate("/add-candidate");
+            setActiveButton("create-election");
+          }}
         >
           <UserPlus />
           <h1 className="text-base font-semibold">Create Election</h1>
         </button>
 
         <div className="flex flex-col gap-2">
+
+{/* DASHBOARD */}
           <button
-            onClick={() => navigate("/home")}
-            className={`flex flex-row items-center p-4 rounded-3xl cursor-pointer transition-all delay-0 duration-300 gap-4  ${
-              page === "dashboard"
+            onClick={() => {
+              navigate("/home");
+              setActiveButton("dashboard");
+            }}
+            className={`flex flex-row items-center p-4 rounded-3xl cursor-pointer transition-all delay-0 duration-300 gap-4 ${
+              activeButton === "dashboard"
                 ? "bg-blue-950 text-blue-50"
                 : "text-blue-900 hover:bg-blue-200"
             }`}
@@ -55,40 +68,85 @@ function Sidebar(props) {
             <h1>Dashboard</h1>
           </button>
 
+{/* RESULT */}
           <button
-            onClick={() => navigate("/result")}
-            className={`flex flex-row items-center p-4 rounded-3xl cursor-pointer transition-all delay-0 duration-300 gap-4  ${
-              page === "result"
+            onClick={() => {
+              navigate("/result");
+              setActiveButton("result");
+            }}
+            className={`flex flex-row items-center p-4 rounded-3xl cursor-pointer transition-all delay-0 duration-300 gap-4 ${
+              activeButton === "result"
                 ? "bg-blue-950 text-blue-50"
                 : "text-blue-900 hover:bg-blue-200"
             }`}
           >
-            <ChartArea />
+            <TrendingUp />
             <h1>Result</h1>
           </button>
 
-          <button
-            onClick={() => navigate("/get-barangay")}
-            className={`flex flex-row items-center p-4 rounded-3xl cursor-pointer transition-all delay-0 duration-300 gap-4  ${
-              page === "get-barangay"
-                ? "bg-blue-950 text-blue-50"
-                : "text-blue-900 hover:bg-blue-200"
-            }`}
-          >
-            <Bell />
-            <h1>Monitoring</h1>
-          </button>
-
-          <div className="relative">
+{/* MONITORING */}
+          <div className={`relative ${isMonitorDropdownOpen ? "mb-40" : ""}`}>
             <button
               className={`flex flex-row items-center justify-between p-4 w-full rounded-3xl cursor-pointer transition-all delay-0 duration-300 gap-4 ${
-                page === "settings"
+                activeButton === "monitoring"
                   ? "bg-blue-950 text-blue-50"
                   : "text-blue-900 hover:bg-blue-200"
               }`}
-              onClick={() =>
-                setSettingsDropdownVisibility(!isSettingsDropdownOpen)
-              }
+              onClick={() => {
+                setMonitorDropdownVisibility(!isMonitorDropdownOpen);
+                setActiveButton("monitoring"); 
+              }}
+            >
+              <div className="flex flex-row items-center gap-4">
+                <MonitorCog />
+                <h1>Monitoring</h1>
+              </div>
+              {isMonitorDropdownOpen ? <ChevronUp /> : <ChevronDown />}
+            </button>
+
+            {isMonitorDropdownOpen && (
+              <div className="absolute flex flex-col gap-2 left-0 p-4 bg-blue-900/10 mt-2 w-full rounded-xl ring-opacity-5 z-50">
+                {/* Voters Monitoring */}
+                <button
+                  onClick={() => {
+                    navigate("/voters-monitoring");
+                    setMonitorDropdownVisibility(false);
+                    setActiveButton("voters-monitoring"); 
+                  }}
+                  className="flex flex-row items-center p-4 rounded-3xl cursor-pointer transition-all delay-0 duration-300 hover:bg-blue-100 text-blue-900 gap-4 w-full"
+                >
+                  <User />
+                  <h1>Voters Monitoring</h1>
+                </button>
+
+                {/* Election Monitoring */}
+                <button
+                  onClick={() => {
+                    navigate("/get-barangay");
+                    setMonitorDropdownVisibility(false);
+                    setActiveButton("election-monitoring"); 
+                  }}
+                  className="flex flex-row items-center p-4 rounded-3xl cursor-pointer transition-all delay-0 duration-300 hover:bg-blue-100 text-blue-900 gap-4 w-full"
+                >
+                  <VoteIcon />
+                  <h1>Election Monitoring</h1>
+                </button>
+              </div>
+            )}
+          </div>
+
+{/* SETTINGS */}
+          <div className="relative">
+            <button
+              className={`flex flex-row items-center justify-between p-4 w-full rounded-3xl cursor-pointer transition-all delay-0 duration-300 gap-4 ${
+                activeButton === "settings"
+                  ? "bg-blue-950 text-blue-50"
+                  : "text-blue-900 hover:bg-blue-200"
+              }`}
+              onClick={() => {
+                setSettingsDropdownVisibility(!isSettingsDropdownOpen);
+                setActiveButton("settings");
+              }}
             >
               <div className="flex flex-row items-center gap-4">
                 <SettingsIcon />
@@ -99,13 +157,19 @@ function Sidebar(props) {
 
             {isSettingsDropdownOpen && (
               <div className="absolute flex flex-col gap-4 left-0 p-4 bg-blue-900/10 mt-2 w-full rounded-xl ring-opacity-5 z-50">
-                <button className="flex flex-row items-center p-4 rounded-3xl cursor-pointer transition-all delay-0 duration-300 hover:bg-blue-100 text-blue-900 gap-4 w-full">
-                  <User />
+                <button
+                  onClick={() => {
+                    navigate("/profile");
+                  }}
+                  className="flex flex-row items-center p-4 rounded-3xl cursor-pointer transition-all delay-0 duration-300 hover:bg-blue-100 text-blue-900 gap-4 w-full"
+                >
+                  <UserCog />
                   <h1>Profile</h1>
                 </button>
+
                 <button
                   onClick={handleLogout}
-                  className="flex flex-row items-center p-4 rounded-3xl cursor-pointer transition-all delay-0 duration-300 hover:bg-blue-100 text-blue-900 gap-4 w-full"
+                  className="flex flex-row items-center p-4 rounded-3xl cursor-pointer transition-all delay-0 duration-300 bg-red-500 text-blue-100 gap-4 w-full"
                 >
                   <LogOut />
                   <h1>Log-out</h1>

@@ -67,7 +67,7 @@ function Home({ isLoggedIn, setIsLoggedIn }) {
           </p>
           <h1 className="text-4xl font-bold">{greeting}, Admin!</h1>
         </div>
-        <h1 className="font-black text-2xl text-blue-600">Overview</h1>
+        <h1 className="font-bold text-2xl text-blue-600">Voters' Overview</h1>
         <div className="flex flex-row basis-[80%] gap-4">
           <div className="flex flex-1 bg-white rounded-3xl"></div>
           <div className="grid grid-rows-[1fr_1fr] gap-4">

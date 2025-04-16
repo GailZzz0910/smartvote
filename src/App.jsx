@@ -5,7 +5,9 @@ import Login from "./Auth/Login";
 import Home from "./Home";
 import AddCandidate from "./screen/AddCandidate";
 import GetBarangay from "./screen/GetBarangay";
-import Result from "./screen/Result"; // Adjust path if necessary
+import Result from "./screen/Result"; 
+import Profile from "./screen/Profile";
+import VotersMonitoring from "./screen/VotersMonitoring,";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -39,6 +41,14 @@ function App() {
         <Route 
           path="/result" 
           element={<Result />} 
+        />
+        <Route 
+          path="/profile" 
+          element={<Profile />} 
+        />
+        <Route 
+          path="/voters-monitoring" 
+          element={<VotersMonitoring />} 
         />
 
       </Routes>
