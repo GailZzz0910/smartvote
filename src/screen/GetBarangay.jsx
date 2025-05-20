@@ -40,9 +40,7 @@ export default function GetBarangay({ setIsLoggedIn }) {
                 const response = await fetch(
                     `https://smart-vote-backend.vercel.app/locations/fetchCitiesAll`,
                     {
-                        headers: {
-                            Authorization: `${token}`,
-                        },
+                        headers: { Authorization: `${token}` },
                     }
                 );
 
@@ -92,7 +90,7 @@ export default function GetBarangay({ setIsLoggedIn }) {
             setError("Please select both City and Barangay");
             return;
         }
-
+        setElections([]);
         setError("");
         setLoading(true);
 
@@ -100,9 +98,7 @@ export default function GetBarangay({ setIsLoggedIn }) {
             const response = await fetch(
                 `https://smart-vote-backend.vercel.app/elections/getByLocation/${selectedCity}/${selectedBarangay}`,
                 {
-                    headers: {
-                        Authorization: `${token}`,
-                    },
+                    headers: { Authorization: `${token}` },
                 }
             );
 
@@ -130,12 +126,39 @@ export default function GetBarangay({ setIsLoggedIn }) {
         }
     };
 
-    const connectToSocket = (electionId) => {
+    const connectToSocket = async (electionId) => {
+        const token = localStorage.getItem("authToken");
+        if (!token) {
+            setError("Please log in to view election results");
+            return;
+        }
+
         setLiveResults(null);
         setActiveElectionId(electionId);
         setShowModal(true);
 
-        const newSocket = io("http://localhost:3000", {
+        try {
+            const response = await fetch(
+                `https://smart-vote-backend.vercel.app/elections/results/${electionId}`,
+                {
+                    headers: {
+                        Authorization: `${token}`,
+                    },
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch current election results");
+            }
+
+            const currentResults = await response.json();
+            setLiveResults(currentResults);
+        } catch (err) {
+            console.error("Error fetching current results:", err);
+            setError(err.message || "Unable to fetch current results");
+        }
+
+        const newSocket = io("https://smartvote-backend.onrender.com", {
             transports: ["websocket"],
         });
 
