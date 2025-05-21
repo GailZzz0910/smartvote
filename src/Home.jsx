@@ -1,40 +1,11 @@
 import React, { useEffect } from "react";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Pie } from "react-chartjs-2";
-
 import Sidebar from "./components/sidebar";
 import dayjs from "dayjs";
 
 import "./globals.css";
 
 function Home({ isLoggedIn, setIsLoggedIn }) {
-  const sampleDataForChart = {
-    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-    datasets: [
-      {
-        label: "# of Votes",
-        data: [12, 19, 3, 5, 2, 3],
-        backgroundColor: [
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
-          "rgba(255, 159, 64, 0.2)",
-        ],
-        borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(255, 159, 64, 1)",
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
-
+  
   const currentHour = new Date().getHours();
   let greeting = "Good evening";
 
@@ -72,10 +43,6 @@ function Home({ isLoggedIn, setIsLoggedIn }) {
           <div className="flex flex-1 bg-white rounded-3xl"></div>
           <div className="grid grid-rows-[1fr_1fr] gap-4">
             <div className="flex shrink bg-white rounded-3xl">
-              <Pie
-                data={sampleDataForChart}
-                options={{ aspectRatio: 1 / 1, responsive: true }}
-              />
             </div>
             <div className="flex grow bg-white rounded-3xl"></div>
           </div>

@@ -5,7 +5,6 @@ import Login from "./Auth/Login";
 import Home from "./Home";
 import AddCandidate from "./screen/AddCandidate";
 import GetBarangay from "./screen/GetBarangay";
-import Result from "./screen/Result"; 
 import Profile from "./screen/Profile";
 import VotersMonitoring from "./screen/VotersMonitoring,";
 
@@ -37,10 +36,6 @@ function App() {
         <Route
           path="/get-barangay"
           element={<GetBarangay setIsLoggedIn={setIsLoggedIn} />}
-        />
-        <Route 
-          path="/result" 
-          element={<Result />} 
         />
         <Route 
           path="/profile" 

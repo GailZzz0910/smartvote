@@ -19,6 +19,11 @@ function AddCandidate({ setIsLoggedIn }) {
     const [barangays, setBarangays] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [validationErrors, setValidationErrors] = useState({
+        name: false,
+        city_id: false,
+        baranggay_id: false
+    });
     const apiUrl = import.meta.env.VITE_API_KEY;
     const navigate = useNavigate();
 
@@ -62,6 +67,7 @@ function AddCandidate({ setIsLoggedIn }) {
             const city = cities.find((c) => c._id === formData.city_id);
             setBarangays(city?.barangays || []);
             setFormData((prev) => ({ ...prev, baranggay_id: "" }));
+            setValidationErrors(prev => ({ ...prev, city_id: false }));
         } else {
             setBarangays([]);
         }
@@ -69,6 +75,12 @@ function AddCandidate({ setIsLoggedIn }) {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        
+        // Clear validation error when field is being edited
+        if (validationErrors[name]) {
+            setValidationErrors({ ...validationErrors, [name]: false });
+        }
+        
         setFormData({ ...formData, [name]: value });
     };
 
@@ -94,10 +106,45 @@ function AddCandidate({ setIsLoggedIn }) {
         setFormData({ ...formData, candidates: newCandidates });
     };
 
+    const validateForm = () => {
+        const errors = {};
+        let isValid = true;
+
+        // Check required fields
+        if (!formData.name) {
+            errors.name = true;
+            isValid = false;
+        }
+
+        if (!formData.city_id) {
+            errors.city_id = true;
+            isValid = false;
+        }
+
+        if (formData.city_id && !formData.baranggay_id) {
+            errors.baranggay_id = true;
+            isValid = false;
+        }
+
+        setValidationErrors(errors);
+        return isValid;
+    };
+
+    const handleNextStep = () => {
+        if (validateForm()) {
+            setIndex(1);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const token = localStorage.getItem("authToken");
         if (!token) {
+            return;
+        }
+
+        if (!validateForm()) {
+            setIndex(0); // Go back to first page if there are validation errors
             return;
         }
 
@@ -146,7 +193,7 @@ function AddCandidate({ setIsLoggedIn }) {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 p-3"
+                    className={`bg-gray-50 border ${validationErrors.name ? 'border-red-500' : 'border-gray-300'} text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 p-3`}
                 >
                     <option value="">Select an election</option>
                     <option value="SK Chairman">SK Chairman</option>
@@ -155,6 +202,9 @@ function AddCandidate({ setIsLoggedIn }) {
                     <option value="Barangay Kagawad">Barangay Kagawad</option>
                     {/*Dugang Candidates Here*/}
                 </select>
+                {validationErrors.name && (
+                    <p className="text-red-500 text-sm mt-1">Please select an election</p>
+                )}
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -166,7 +216,7 @@ function AddCandidate({ setIsLoggedIn }) {
                         onChange={handleChange}
                         required
                         disabled={loading}
-                        className="w-full border border-gray-300 p-3 bg-gray-50 rounded-xl"
+                        className={`w-full border ${validationErrors.city_id ? 'border-red-500' : 'border-gray-300'} p-3 bg-gray-50 rounded-xl`}
                     >
                         <option value="">Select City</option>
                         {cities.map((city) => (
@@ -175,6 +225,9 @@ function AddCandidate({ setIsLoggedIn }) {
                             </option>
                         ))}
                     </select>
+                    {validationErrors.city_id && (
+                        <p className="text-red-500 text-sm mt-1">Please select a city</p>
+                    )}
                 </div>
                 <div className="flex flex-col gap-2">
                     <p>Barangay</p>
@@ -183,7 +236,7 @@ function AddCandidate({ setIsLoggedIn }) {
                         value={formData.baranggay_id}
                         onChange={handleChange}
                         disabled={!formData.city_id || loading}
-                        className="w-full border border-gray-300 p-3 bg-gray-50 rounded-xl"
+                        className={`w-full border ${validationErrors.baranggay_id ? 'border-red-500' : 'border-gray-300'} p-3 bg-gray-50 rounded-xl`}
                     >
                         <option value="">Select Barangay</option>
                         {barangays.map((brgy) => (
@@ -192,6 +245,9 @@ function AddCandidate({ setIsLoggedIn }) {
                             </option>
                         ))}
                     </select>
+                    {validationErrors.baranggay_id && formData.city_id && (
+                        <p className="text-red-500 text-sm mt-1">Please select a barangay</p>
+                    )}
                 </div>
             </div>
             <p>Description</p>
@@ -201,7 +257,7 @@ function AddCandidate({ setIsLoggedIn }) {
                 onChange={handleChange}
                 required
                 placeholder="Enter election description"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 p-3 resize-none"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 p-3 resize-none"
             />
             <h1 className="font-extrabold text-[#EA580C] text-base">
                 Election Period
@@ -234,7 +290,7 @@ function AddCandidate({ setIsLoggedIn }) {
                 type="button"
                 disabled={loading}
                 className="p-4 bg-[#111B56] rounded-xl text-white cursor-pointer"
-                onClick={() => setIndex(1)}
+                onClick={handleNextStep}
             >
                 Next
             </button>
@@ -262,7 +318,7 @@ function AddCandidate({ setIsLoggedIn }) {
                             onChange={(e) => handleCandidateChange(index, e)}
                             placeholder="Candidate name"
                             required
-                            class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 p-3"
+                            className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 p-3"
                         />
                         <input
                             type="text"
@@ -271,7 +327,7 @@ function AddCandidate({ setIsLoggedIn }) {
                             onChange={(e) => handleCandidateChange(index, e)}
                             placeholder="Partylist"
                             required
-                            class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 p-3"
+                            className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 p-3"
                         />
                         {formData.candidates.length > 1 && (
                             <X
@@ -285,19 +341,23 @@ function AddCandidate({ setIsLoggedIn }) {
                 ))}
 
                 <div className="relative h-80 w-full">
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className={`p-4 px-6 rounded-xl text-white absolute bottom-4 right-4 transition-all duration-300 
-      ${
-          loading
-              ? "bg-[#111B56a0] cursor-not-allowed"
-              : "bg-[#111B56d4] hover:bg-[#111B56]"
-      }
-    `}
-                    >
-                        {loading ? "Creating..." : "Submit Entry"}
-                    </button>
+                    <div className="flex gap-4 absolute bottom-4 right-4">
+                        <button
+                            type="button"
+                            className="p-4 px-6 rounded-xl text-gray-700 border border-gray-300 bg-gray-100 hover:bg-gray-200"
+                            onClick={() => setIndex(0)}
+                        >
+                            Back
+                        </button>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className={`p-4 px-6 rounded-xl text-white transition-all duration-300 
+                            ${loading ? "bg-[#111B56a0] cursor-not-allowed" : "bg-[#111B56d4] hover:bg-[#111B56]"}`}
+                        >
+                            {loading ? "Creating..." : "Submit Entry"}
+                        </button>
+                    </div>
                 </div>
             </div>
         </>,
@@ -319,7 +379,7 @@ function AddCandidate({ setIsLoggedIn }) {
                             <button
                                 type="button"
                                 className={
-                                    index == 0
+                                    index === 0
                                         ? "border-b-2 border-blue-800 px-4 pb-2 font-bold cursor-pointer"
                                         : "px-4 pb-2 cursor-pointer"
                                 }
@@ -331,18 +391,18 @@ function AddCandidate({ setIsLoggedIn }) {
                             <button
                                 type="button"
                                 className={
-                                    index == 1
+                                    index === 1
                                         ? "border-b-2 border-blue-800 px-4 pb-2 font-bold cursor-pointer"
                                         : "px-4 pb-2 cursor-pointer"
                                 }
-                                onClick={() => setIndex(1)}
+                                onClick={() => index === 0 && validateForm() ? setIndex(1) : null}
                             >
                                 Candidates
                             </button>
                         </div>
                     </div>
                     {pages[index]}
-                    {error && <div className="p-4 bg-red-500">{error}</div>}
+                    {error && <div className="p-4 bg-red-500 text-white rounded-lg mt-4">{error}</div>}
                 </form>
             </div>
         </main>

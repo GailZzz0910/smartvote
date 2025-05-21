@@ -68,22 +68,6 @@ function Sidebar(props) {
             <h1>Dashboard</h1>
           </button>
 
-{/* RESULT */}
-          <button
-            onClick={() => {
-              navigate("/result");
-              setActiveButton("result");
-            }}
-            className={`flex flex-row items-center p-4 rounded-3xl cursor-pointer transition-all delay-0 duration-300 gap-4 ${
-              activeButton === "result"
-                ? "bg-blue-950 text-blue-50"
-                : "text-blue-900 hover:bg-blue-200"
-            }`}
-          >
-            <TrendingUp />
-            <h1>Result</h1>
-          </button>
-
 {/* MONITORING */}
           <div className={`relative ${isMonitorDropdownOpen ? "mb-40" : ""}`}>
             <button
