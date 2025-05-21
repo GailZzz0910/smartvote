@@ -54,6 +54,7 @@ export default function GetBarangay({ setIsLoggedIn }) {
                 }
 
                 const data = await response.json();
+                console.log(data)
                 setCities(data);
             } catch (err) {
                 console.error("Error fetching cities:", err);

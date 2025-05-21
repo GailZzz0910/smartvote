@@ -106,7 +106,7 @@ function AddCandidate({ setIsLoggedIn }) {
         setFormData({ ...formData, candidates: newCandidates });
     };
 
-    const validateForm = () => {
+     const validateForm = () => {
         const errors = {};
         let isValid = true;
 
@@ -123,6 +123,21 @@ function AddCandidate({ setIsLoggedIn }) {
 
         if (formData.city_id && !formData.baranggay_id) {
             errors.baranggay_id = true;
+            isValid = false;
+        }
+
+        if (!formData.description.trim()) {
+        errors.description = true;
+        isValid = false;
+         }
+
+        if (!formData.start_date) {
+            errors.start_date = true;
+            isValid = false;
+        }
+
+        if (!formData.end_date) {
+            errors.end_date = true;
             isValid = false;
         }
 
@@ -251,14 +266,18 @@ function AddCandidate({ setIsLoggedIn }) {
                 </div>
             </div>
             <p>Description</p>
-            <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                required
-                placeholder="Enter election description"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 p-3 resize-none"
-            />
+                <textarea
+                    name="description"
+                    value={formData.description}
+                    onChange={handleChange}
+                    required
+                    placeholder="Enter election description"
+                    className={`bg-gray-50 border ${validationErrors.description ? 'border-red-500' : 'border-gray-300'} text-gray-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 p-3 resize-none`}
+                ></textarea>
+                {validationErrors.description && (
+                    <p className="text-red-500 text-sm mt-1">Description cannot be empty</p>
+                )}
+
             <h1 className="font-extrabold text-[#EA580C] text-base">
                 Election Period
             </h1>
@@ -271,8 +290,11 @@ function AddCandidate({ setIsLoggedIn }) {
                         value={formData.start_date}
                         onChange={handleChange}
                         required
-                        className="p-4 border border-gray-300 rounded-3xl"
+                        className={`w-full border ${validationErrors.start_date ? 'border-red-500' : 'border-gray-300'} p-3 bg-gray-50 rounded-xl`}
                     />
+                    {validationErrors.start_date && (
+                        <p className="text-red-500 text-sm mt-1">Please select a start date </p>
+                    )}
                 </div>
                 <div className="flex flex-col gap-2">
                     <p>End Date</p>
@@ -282,9 +304,13 @@ function AddCandidate({ setIsLoggedIn }) {
                         value={formData.end_date}
                         onChange={handleChange}
                         required
-                        className="p-4 border border-gray-300 rounded-3xl"
+                        className={`w-full border ${validationErrors.end_date ? 'border-red-500' : 'border-gray-300'} p-3 bg-gray-50 rounded-xl`}
                     />
+                    {validationErrors.start_date && (
+                        <p className="text-red-500 text-sm mt-1">Please select an end date </p>
+                    )}
                 </div>
+
             </div>
             <button
                 type="button"
