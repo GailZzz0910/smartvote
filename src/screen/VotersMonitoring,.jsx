@@ -64,10 +64,8 @@ export default function VotersMonitoring({ setIsLoggedIn }) {
       : true;
     const nameLower = nameSearch.toLowerCase();
     const nameMatch = nameSearch
-      ? (
-          (user.first_name?.toLowerCase() ?? "").includes(nameLower) ||
-          (user.last_name?.toLowerCase() ?? "").includes(nameLower)
-        )
+      ? (user.first_name?.toLowerCase() ?? "").includes(nameLower) ||
+        (user.last_name?.toLowerCase() ?? "").includes(nameLower)
       : true;
     return cityMatch && barangayMatch && nameMatch;
   });
@@ -89,8 +87,6 @@ export default function VotersMonitoring({ setIsLoggedIn }) {
     ? cities.find((c) => c._id === selectedCityId)?.barangays || []
     : [];
 
-
-
   if (error) {
     return (
       <main className="flex justify-center items-center min-h-screen bg-gray-100">
@@ -104,7 +100,9 @@ export default function VotersMonitoring({ setIsLoggedIn }) {
       <Sidebar page={"dashboard"} setIsLoggedIn={setIsLoggedIn} />
 
       <div className="flex flex-col p-8 flex-grow bg-gray-100 gap-6">
-        <h1 className="text-3xl font-bold text-blue-700 mb-6">Voters' Monitoring</h1>
+        <h1 className="text-3xl font-bold text-blue-700 mb-6">
+          Voters' Monitoring
+        </h1>
 
         {/* Filters */}
         <div className="flex flex-wrap gap-4 mb-6">
@@ -148,36 +146,38 @@ export default function VotersMonitoring({ setIsLoggedIn }) {
         </div>
 
         {/* Table */}
-        <div className="bg-white shadow overflow-auto max-h-[600px]">
-          {filteredUsers.length === 0 ? (
-            <p className="text-center p-6 text-gray-500">No users found.</p>
-          ) : (
-            <table className="table-auto w-full text-left border-collapse">
-              <thead className="bg-blue-100 sticky top-0 z-10">
-                <tr className="text-blue-800">
-                  <th className="px-4 py-2">#</th>
-                  <th className="px-4 py-2">First Name</th>
-                  <th className="px-4 py-2">Last Name</th>
-                  <th className="px-4 py-2">City</th>
-                  <th className="px-4 py-2">Barangay</th>
+        <div className="bg-white rounded-2xl p-4 shadow border border-gray-200">
+
+          {/* Scrollable table container */}
+          <div className="max-h-[600px] overflow-y-auto rounded-md border border-gray-200">
+            <table className="min-w-full table-auto">
+              <thead className="sticky top-0 bg-blue-100 z-10">
+                <tr className="border-b border-gray-300 text-gray-800">
+                  <th className="px-6 py-4 text-left">#</th>
+                  <th className="px-6 py-4 text-left">First Name</th>
+                  <th className="px-6 py-4 text-left">Last Name</th>
+                  <th className="px-6 py-4 text-left">City</th>
+                  <th className="px-6 py-4 text-left">Barangay</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredUsers.map((user, idx) => (
                   <tr
                     key={user._id}
-                    className="border-t hover:bg-gray-50 cursor-pointer"
+                    className="border-b border-gray-300 hover:bg-gray-50 cursor-pointer"
                   >
-                    <td className="px-4 py-2">{idx + 1}</td>
-                    <td className="px-4 py-2">{user.first_name}</td>
-                    <td className="px-4 py-2">{user.last_name}</td>
-                    <td className="px-4 py-2">{getCityName(user.city_id)}</td>
-                    <td className="px-4 py-2">{getBarangayName(user.baranggay_id)}</td>
+                    <td className="px-6 py-4">{idx + 1}</td>
+                    <td className="px-6 py-4">{user.first_name}</td>
+                    <td className="px-6 py-4">{user.last_name}</td>
+                    <td className="px-6 py-4">{getCityName(user.city_id)}</td>
+                    <td className="px-6 py-4">
+                      {getBarangayName(user.baranggay_id)}
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          )}
+          </div>
         </div>
       </div>
     </main>
