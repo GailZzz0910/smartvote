@@ -56,7 +56,7 @@ export default function VotersMonitoring({ setIsLoggedIn }) {
     fetchAll();
   }, []);
 
-  // Defensive filtered users calculation:
+  //filtered users calculation:
   const filteredUsers = users.filter((user) => {
     const cityMatch = selectedCityId ? user.city_id === selectedCityId : true;
     const barangayMatch = selectedBarangayId

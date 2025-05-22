@@ -159,7 +159,7 @@ function AddCandidate({ setIsLoggedIn }) {
         }
 
         if (!validateForm()) {
-            setIndex(0); // Go back to first page if there are validation errors
+            setIndex(0); // back to first page if naay validation errors
             return;
         }
 

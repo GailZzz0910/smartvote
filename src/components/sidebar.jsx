@@ -82,7 +82,7 @@ function Sidebar(props) {
 
   return (
     <>
-      {/* Mobile overlay  */}
+      {/* Mobayl  */}
       {!isCollapsed && isMobile && (
         <div 
           className="fixed inset-0 bg-black/50 z-40 backdrop-blur-sm transition-opacity duration-300"
@@ -90,7 +90,7 @@ function Sidebar(props) {
         />
       )}
 
-      {/* Mobile menu button */}
+      {/* Mobayl menu button */}
       {isMobile && (
         <button
           onClick={toggleSidebar}
@@ -128,7 +128,7 @@ function Sidebar(props) {
           {!isCollapsed && (
             <div className="flex justify-center my-2">
               <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-indigo-900 bg-clip-text text-transparent">
-                SmartVote
+                E-boto
               </h1>
             </div>
           )}
@@ -233,17 +233,6 @@ function Sidebar(props) {
 
               {isSettingsDropdownOpen && !isCollapsed && (
                 <div className="flex flex-col gap-1 mt-1 ml-12 pl-2 border-l-2 border-indigo-200">
-                  <button
-                    onClick={() => handleNavigation("/profile", "profile")}
-                    className={`flex items-center p-3 rounded-lg cursor-pointer transition-all duration-300 gap-3
-                      ${activeButton === "profile"
-                        ? "bg-indigo-700 text-white"
-                        : "text-indigo-800 hover:bg-indigo-100"}`}
-                  >
-                    <UserCog size={16} />
-                    <span className="text-sm">Profile</span>
-                  </button>
-
                   <button
                     onClick={handleLogout}
                     className="flex items-center p-3 rounded-lg cursor-pointer transition-all duration-300 gap-3 bg-red-500 text-white hover:bg-red-600"
