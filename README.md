@@ -1,12 +1,61 @@
-# React + Vite
+# SmartVote Web
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+SmartVote Web is a modern web application built with React and Vite, designed for efficient and user-friendly voting management. It leverages Tailwind CSS for styling and includes real-time features and data visualization.
 
-Currently, two official plugins are available:
+## Features
+- Modern React + Vite setup with HMR
+- Tailwind CSS for rapid UI development
+- Real-time updates with Socket.io
+- Data visualization with Chart.js and Recharts
+- Modular and maintainable code structure
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Getting Started
 
-## Expanding the ESLint configuration
+### Prerequisites
+- Node.js (v18 or higher recommended)
+- npm or yarn
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Installation
+```sh
+npm install
+```
+
+### Running the App
+```sh
+npm run dev
+```
+
+### Building for Production
+```sh
+npm run build
+```
+
+### Linting
+```sh
+npm run lint
+```
+
+## Project Structure
+- `src/` - Main source code
+  - `components/` - Reusable React components
+  - `screen/` - Main application screens
+  - `styles/` - CSS and Tailwind styles
+- `public/` - Static assets
+
+## Contributing
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature/your-feature`)
+3. Commit your changes (`git commit -m 'Add some feature'`)
+4. Push to the branch (`git push origin feature/your-feature`)
+5. Open a Pull Request
+
+## License
+This project is licensed under the MIT License.
+
+## Notes
+- **Do not commit sensitive information** (API keys, tokens, etc.)
+- Ensure `.env` files and `node_modules` are excluded via `.gitignore`
+
+---
+
+Built with ❤️ using React, Vite, and Tailwind CSS.
