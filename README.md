@@ -1,6 +1,6 @@
-# SmartVote Web
+# E-Boto Web
 
-SmartVote Web is a modern web application built with React and Vite, designed for efficient and user-friendly voting management. It leverages Tailwind CSS for styling and includes real-time features and data visualization.
+E-Boto Web is a modern web application built with React and Vite, designed for efficient and user-friendly voting management. It leverages Tailwind CSS for styling and includes real-time features and data visualization.
 
 ## Features
 - Modern React + Vite setup with HMR
